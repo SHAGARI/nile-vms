@@ -10,9 +10,11 @@ import { supabase } from '@/lib/supabase';
 import useProfile from '@/hooks/use-profile';
 import VisitorCard from '@/components/VisitorCard';
 import useVisitors from '@/hooks/use-visitors';
+import useSession from '@/hooks/use-session';
 
 export default function HomeScreen() {
   const { username, loading } = useProfile()
+  const session = useSession()
   const { visitors, loading: visitorsLoading } = useVisitors()
 
   // if (!session?.user) <Redirect href="/auth" />
@@ -31,11 +33,21 @@ export default function HomeScreen() {
       <View style={{ alignSelf: "stretch", paddingVertical: 8, flexDirection: "row", alignItems: "center", justifyContent: "flex-start" }}>
         <Text style={{ fontWeight: "700", paddingHorizontal: 8 }} h4>Hello, {username}</Text>
       </View>
-      <Link href="/register-visitor" asChild>
-        <Button style={{ padding: 8, width: 200 }} color="#1C4DA1" size='md' radius='sm'>
-          Register Visitor
-        </Button>
-      </Link>
+      {
+        session?.user.email?.includes("admin") ? (
+          <Link href="/verify-visitor" asChild>
+            <Button style={{ padding: 8, width: 200 }} color="#1C4DA1" size='md' radius='sm'>
+              Verify Visitor
+            </Button>
+          </Link>
+        ) : (
+          <Link href="/register-visitor" asChild>
+            <Button style={{ padding: 8, width: 200 }} color="#1C4DA1" size='md' radius='sm'>
+              Register Visitor
+            </Button>
+          </Link>
+        )
+      }
       <View>
         <Text style={{ fontWeight: "500", paddingHorizontal: 8 }} h4>Recent Visitors</Text>
         <FlatList

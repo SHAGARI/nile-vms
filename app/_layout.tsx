@@ -59,6 +59,7 @@ function RootLayoutNav() {
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
             <Stack.Screen name="visitor/[id]" options={{ headerShown: false }} />
             <Stack.Screen name="register-visitor" options={{ presentation: 'modal', headerTitle: "Register Visitor" }} />
+            <Stack.Screen name="verify-visitor" options={{ headerShown: false }} />
             <Stack.Screen name='auth' options={{ headerShown: false }} />
           </Stack>
         </ThemeProvider>

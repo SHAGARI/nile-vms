@@ -20,17 +20,32 @@ export default function useVisitors() {
       // console.log(session);
       
 
-      const { data, error, status } = await supabase
-        .from('visitor_passes')
-        .select('*')
-        .eq('user', session?.user.id)
-        .order("created_at", { ascending: false })
-      if (error && status !== 406) {
-        throw error
-      }
+      if (session.user.email?.includes('admin')) {
+        const { data, error, status } = await supabase
+          .from('visitor_passes')
+          .select('*')
+          .order("created_at", { ascending: false })
+        if (error && status !== 406) {
+          throw error
+        }
 
-      if (data) {
-        setVisitors(data)
+        if (data) {
+          setVisitors(data)
+        }
+      }
+      else {
+          const { data, error, status } = await supabase
+          .from('visitor_passes')
+          .select('*')
+          .eq('user', session?.user.id)
+          .order("created_at", { ascending: false })
+        if (error && status !== 406) {
+          throw error
+        }
+
+        if (data) {
+          setVisitors(data)
+        }
       }
     } catch (error) {
       if (error instanceof Error) {
